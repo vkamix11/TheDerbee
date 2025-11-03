@@ -12,115 +12,159 @@
 
     <style>
         :root {
-            --bg-color: #000000;
-            --primary-color: #FFFFFF;
+            --bg-color: #000;
+            --primary-color: #fff;
             --secondary-color: #b3b3b3;
             --accent-color: #FFA800;
-            --surface-color: #1a1a1a;
+            --surface-color: #111;
             --gradient: linear-gradient(90deg, #FFA800, #FF0059);
         }
 
-        * { margin: 0; padding: 0; box-sizing: border-box; }
-        html { scroll-behavior: smooth; }
-        body {
-            font-family: 'Poppins', sans-serif;
-            background-color: var(--bg-color);
-            color: var(--primary-color);
-            line-height: 1.7;
-            font-size: 18px;
-            overflow-x: hidden;
+        *{margin:0;padding:0;box-sizing:border-box;}
+        body{
+            font-family:'Poppins',sans-serif;
+            background:var(--bg-color);
+            color:var(--primary-color);
+            overflow-x:hidden;
         }
 
-        .cursor-dot, .cursor-outline { display: none; } 
-        @media (pointer: fine) {
-            body { cursor: none; }
-            .cursor-dot, .cursor-outline {
-                display: block;
-                position: fixed; top: 0; left: 0;
-                transform: translate(-50%, -50%);
-                border-radius: 50%; pointer-events: none;
-                z-index: 9999; transition: all 0.1s ease-out;
-            }
-            .cursor-dot { width: 8px; height: 8px; background-color: var(--accent-color); }
-            .cursor-outline { width: 40px; height: 40px; border: 2px solid var(--accent-color); opacity: 0.5; }
-            .cursor-grow .cursor-outline { transform: translate(-50%, -50%) scale(1.5); opacity: 0.8; }
+        /* ====== CUSTOM CURSOR ====== */
+        .cursor-dot, .cursor-outline{
+            position:fixed;
+            top:0;left:0;
+            border-radius:50%;
+            pointer-events:none;
+            z-index:9999;
+            display:none;
+        }
+        .cursor-dot{
+            width:8px;height:8px;
+            background:var(--accent-color);
+        }
+        .cursor-outline{
+            width:40px;height:40px;
+            border:2px solid var(--accent-color);
+            opacity:.4;
+            transition:transform .15s ease-out, opacity .15s ease-out;
+        }
+        .cursor-grow .cursor-outline{
+            transform:scale(1.6);
+            opacity:.8;
         }
 
-        header {
-            position: fixed; top: 0; left: 0;
-            width: 100%; padding: 1.5rem 5%;
-            background-color: transparent;
-            display: flex; justify-content: space-between; align-items: center;
-            z-index: 1000; transition: padding 0.3s ease, background-color 0.3s ease;
+        @media(pointer:fine){
+            .cursor-dot, .cursor-outline{display:block;}
+            body{cursor:none;}
         }
-        header.scrolled { padding: 0.8rem 5%; background-color: rgba(18, 18, 18, 0.85); backdrop-filter: blur(10px); }
 
-        .logo a { font-size: 1.5rem; font-weight: 700; color: var(--primary-color); text-decoration: none; }
-
-        #nav-links {
-            list-style: none; position: fixed;
-            top: 0; right: 0; width: 100%; height: 100vh;
-            background: rgba(18, 18, 18, 0.98); backdrop-filter: blur(15px);
-            display: flex; flex-direction: column; justify-content: center; align-items: center;
-            transform: translateX(100%); transition: transform 0.4s cubic-bezier(0.77, 0, 0.18, 1);
+        /* ===== HEADER & NAV ===== */
+        header{
+            position:fixed;top:0;left:0;width:100%;
+            padding:1.5rem 5%;
+            display:flex;justify-content:space-between;align-items:center;
+            z-index:1000;
+            transition:.3s;
         }
-        #nav-links.active { transform: translateX(0); }
-        #nav-links li { margin: 1.5rem 0; }
-        #nav-links a { text-decoration: none; color: var(--primary-color); font-weight: 600; font-size: 1.8rem; }
-
-        .hamburger-menu {
-            display: flex; flex-direction: column;
-            justify-content: space-around; width: 2rem; height: 2rem;
-            cursor: pointer; z-index: 1001;
+        header.scrolled{
+            background:rgba(10,10,10,0.85);
+            backdrop-filter:blur(10px);
+            padding:.8rem 5%;
         }
-        .hamburger-menu .bar { width: 100%; height: 3px; background-color: var(--primary-color); border-radius: 2px; transition: all 0.3s ease; }
 
-        section { padding: 80px 8%; text-align: center; }
-        section#o-mnie { padding-top: 40px; }
-
-        #hero {
-            min-height: 100vh;
-            display: flex; justify-content: center; align-items: center;
+        .logo a{
+            font-weight:700;
+            font-size:1.6rem;
+            text-decoration:none;
+            color:var(--primary-color);
         }
-        
-        .container { max-width: 800px; width: 100%; margin: 0 auto; }
-        
-        h2 { font-size: 2.2rem; margin-bottom: 1rem; font-weight: 700; text-transform: uppercase; }
-        .line { width: 70px; height: 4px; background: var(--gradient); margin: 0 auto 2rem auto; border-radius: 2px; }
-        p { color: var(--secondary-color); font-size: 1rem; }
 
-        #hero h1 {
-            font-size: 3.2rem; font-weight: 700;
-            background: var(--gradient);
-            -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;
-            line-height: 1.2;
+        /* MENU FULLSCREEN */
+        #nav-links{
+            position:fixed;top:0;right:0;
+            width:100%;height:100vh;
+            background:rgba(15,15,15,.96);
+            backdrop-filter:blur(15px);
+            display:flex;flex-direction:column;
+            justify-content:center;align-items:center;
+            transform:translateX(100%);
+            transition:transform .35s cubic-bezier(0.77, 0, 0.18, 1);
         }
-        #hero p { font-size: 1.2rem; color: var(--secondary-color); font-weight: 300; }
+        #nav-links.active{transform:translateX(0);}
 
-        .social-grid { display: grid; grid-template-columns: 1fr; gap: 1.5rem; margin-top: 3rem; text-align: left; }
-        .social-column h3 { font-size: 1.5rem; margin-bottom: 1.5rem; border-left: 3px solid var(--accent-color); padding-left: 1rem; }
-        
-        .social-links a {
-            display: flex; align-items: center; background-color: var(--surface-color);
-            padding: 1rem; margin-bottom: 1rem; border-radius: 8px; text-decoration: none;
-            font-size: 1.1rem; font-weight: 600; color: var(--primary-color);
-            transition: transform 0.3s ease, background-color 0.3s ease;
+        #nav-links li{margin:1.5rem 0;}
+        #nav-links a{
+            color:white;text-decoration:none;font-size:2rem;font-weight:600;
+            transition:.2s;
         }
-        .social-links a:hover { 
-            transform: translateY(-5px); 
-            background: var(--gradient); 
+        #nav-links a:hover{color:var(--accent-color);}
+
+        /* Hamburger */
+        .hamburger-menu{
+            width:30px;height:22px;display:flex;
+            flex-direction:column;justify-content:space-between;
+            cursor:pointer;z-index:1001;
         }
-        .social-links a i { font-size: 1.5rem; margin-right: 1rem; width: 25px; text-align: center; }
-
-        .hidden { opacity: 0; transform: translateY(30px); transition: opacity 0.6s ease-out, transform 0.6s ease-out; }
-        .show { opacity: 1; transform: translateY(0); }
-
-        footer { text-align: center; padding: 2rem 5%; background-color: #0c0c0c; color: var(--secondary-color); font-size: 0.9rem; }
-
-        @media (min-width: 768px) {
-            .social-grid { grid-template-columns: 1fr 1fr; }
-            #hero h1 { font-size: 5rem; }
+        .bar{
+            height:3px;width:100%;
+            background:white;border-radius:2px;
+            transition:.3s;
         }
+
+        /* X (close menu) */
+        .close-menu{
+            position:absolute;top:25px;left:25px;
+            font-size:30px;color:white;cursor:pointer;
+            opacity:0;pointer-events:none;
+            transition:.3s;
+        }
+        #nav-links.active .close-menu{
+            opacity:1;pointer-events:all;
+        }
+
+        section{padding:100px 7%;text-align:center;}
+        #hero{
+            min-height:100vh;
+            display:flex;align-items:center;justify-content:center;
+        }
+
+        #hero h1{
+            font-size:4rem;
+            background:var(--gradient);
+            -webkit-background-clip:text;
+            -webkit-text-fill-color:transparent;
+        }
+
+        /* BEAUTIFUL BUTTON */
+        .twitch-button{
+            margin-top:25px;
+            display:inline-flex;
+            align-items:center;
+            gap:10px;
+            padding:1rem 2.5rem;
+            color:#000;
+            font-weight:700;
+            font-size:1.1rem;
+            background:var(--gradient);
+            border-radius:50px;
+            text-decoration:none;
+            transition:.25s;
+            box-shadow:0 0 12px rgba(255,168,0,.6);
+        }
+        .twitch-button:hover{
+            transform:translateY(-4px) scale(1.05);
+            box-shadow:0 0 25px rgba(255,168,0,1);
+        }
+
+        .container{max-width:800px;margin:auto;}
+
+        footer{
+            background:#0b0b0b;color:#aaa;text-align:center;
+            padding:2rem;
+        }
+
+        /* Reveal Animations */
+        .hidden{opacity:0;transform:translateY(40px);transition:.6s;}
+        .show{opacity:1;transform:translateY(0);}
     </style>
 </head>
 <body>
@@ -129,99 +173,104 @@
     <div class="cursor-outline"></div>
 
     <header id="header">
-        <div class="logo">
-            <a href="#hero" id="logo-link" class="interactive">TheDerBee</a>
+        <div class="logo"><a href="#hero" class="interactive">TheDerBee</a></div>
+        <div class="hamburger-menu interactive" id="hamburger-menu">
+            <div class="bar"></div>
+            <div class="bar"></div>
+            <div class="bar"></div>
         </div>
-        <nav>
-            <ul id="nav-links">
-                <li><a href="#o-mnie" class="interactive">O mnie</a></li>
-                <li><a href="#stream" class="interactive">Stream</a></li>
-                <li><a href="#sociale" class="interactive">Sociale</a></li>
-            </ul>
-            <div class="hamburger-menu interactive" id="hamburger-menu">
-                <div class="bar"></div>
-                <div class="bar"></div>
-                <div class="bar"></div>
-            </div>
-        </nav>
+        <ul id="nav-links">
+            <div class="close-menu" id="close-menu"><i class="fa-solid fa-xmark"></i></div>
+            <li><a href="#o-mnie" class="nav-link">O mnie</a></li>
+            <li><a href="#stream" class="nav-link">Stream</a></li>
+            <li><a href="#sociale" class="nav-link">Sociale</a></li>
+        </ul>
     </header>
 
-    <main>
-        <section id="hero">
-            <div class="hero-content">
-                <h1 class="hidden">TheDerBee</h1>
-                <p class="hidden">Streamer Twitch. Rozgrywka, humor, interakcja ze społecznością.</p>
-            </div>
-        </section>
+    <section id="hero">
+        <div class="container hidden">
+            <h1>TheDerBee</h1>
+            <p>Streamer Twitch · humor · gry · komputerowy nerd informatyki 🧠💻</p>
+        </div>
+    </section>
 
-        <section id="o-mnie">
-            <div class="container hidden">
-                <h2>O MNIE</h2>
-                <div class="line"></div>
-                <p>
-                    Cześć! Jestem TheDerBee — streamer, który przede wszystkim stawia na dobrą atmosferę i kontakt z widzami. Na moich transmisjach znajdziesz luźne rozmowy, dynamiczną rozgrywkę oraz sporą dawkę humoru. Zależy mi na budowaniu przyjaznej i aktywnej społeczności, z którą razem tworzymy miejsce pełne pozytywnej energii.
-                </p>
-            </div>
-        </section>
+    <section id="o-mnie">
+        <div class="container hidden">
+            <h2>O MNIE</h2>
+            <p>
+                Jestem TheDerBee – entuzjasta gier, streamer i dumny nerd informatyczny.
+                Uwielbiam technologię, nowinki komputerowe i budowanie przyjaznej, aktywnej społeczności.
+            </p>
+        </div>
+    </section>
 
-        <section id="stream">
-            <div class="container hidden">
-                <h2>STREAM NA TWITCH</h2>
-                <div class="line"></div>
-                <p>
-                    Streamuję na platformie Twitch. Jeśli chcesz spędzić czas w przyjaznej atmosferze — zajrzyj, zostaw followa i wpadaj pogadać na czacie!
-                </p>
-                <br>
-                <a href="https://www.twitch.tv/thederbee" target="_blank" class="social-link interactive" style="display:inline-flex;background:var(--surface-color);padding:1rem 2rem;border-radius:8px;">
-                    <i class="fab fa-twitch" style="margin-right:10px;"></i> ODWIEDŹ TWITCH
-                </a>
-            </div>
-        </section>
+    <section id="stream">
+        <div class="container hidden">
+            <h2>STREAM NA TWITCH</h2>
+            <p>Wpadaj po humor, rozmowy i gry!</p>
+            <a href="https://www.twitch.tv/thederbee" target="_blank" class="twitch-button">
+                <i class="fab fa-twitch"></i> ODWIEDŹ TWITCH
+            </a>
+        </div>
+    </section>
 
-        <section id="sociale">
-            <div class="container hidden">
-                <h2>MEDIA I KONTAKT</h2>
-                <div class="line"></div>
-                <div class="social-grid">
-                    <div class="social-column">
-                        <h3>Główne Linki</h3>
-                        <div class="social-links">
-                            <a href="https://www.twitch.tv/thederbee" target="_blank" class="social-link interactive">
-                                <i class="fab fa-twitch"></i> Twitch
-                            </a>
-                        </div>
-                    </div>
-                    <div class="social-column">
-                        <h3>Inne Platformy</h3>
-                        <p>Na tę chwilę brak oficjalnych mediów społecznościowych poza Twitch.</p>
-                    </div>
-                </div>
-            </div>
-        </section>
-    </main>
+    <section id="sociale">
+        <div class="container hidden">
+            <h2>SOCIALE</h2>
+            <p>Aktualnie najaktywniejszy na Twitch.</p>
+        </div>
+    </section>
 
     <footer>
-        <p>© 2025 TheDerBee. Wszelkie prawa zastrzeżone.</p>
+        © 2025 TheDerBee – Wszystkie prawa zastrzeżone
     </footer>
 
     <script>
+        /* Cursor */
+        const dot = document.querySelector('.cursor-dot');
+        const outline = document.querySelector('.cursor-outline');
+
+        window.addEventListener('mousemove',(e)=>{
+            dot.style.top = e.clientY + 'px';
+            dot.style.left = e.clientX + 'px';
+            outline.style.top = e.clientY + 'px';
+            outline.style.left = e.clientX + 'px';
+        });
+
+        document.querySelectorAll('.interactive').forEach(el=>{
+            el.addEventListener('mouseenter',()=>document.body.classList.add('cursor-grow'));
+            el.addEventListener('mouseleave',()=>document.body.classList.remove('cursor-grow'));
+        });
+
+        /* Header scroll */
         const header = document.getElementById('header');
-        window.addEventListener('scroll', () => {
+        window.addEventListener('scroll',()=>{
             header.classList.toggle('scrolled', window.scrollY > 50);
         });
 
-        const hamburger = document.getElementById('hamburger-menu');
-        const navLinks = document.getElementById('nav-links');
-        hamburger.addEventListener('click', () => navLinks.classList.toggle('active'));
+        /* Mobile menu */
+        const nav = document.getElementById('nav-links');
+        const burger = document.getElementById('hamburger-menu');
+        const closeMenu = document.getElementById('close-menu');
+        const navLinks = document.querySelectorAll('.nav-link');
 
-        const observer = new IntersectionObserver((entries) => {
-            entries.forEach(entry => {
-                if (entry.isIntersecting) {
-                    entry.target.classList.add('show');
-                }
+        burger.addEventListener('click',()=> nav.classList.toggle('active'));
+        closeMenu.addEventListener('click',()=> nav.classList.remove('active'));
+
+        navLinks.forEach(link=>{
+            link.addEventListener('click',()=>{
+                nav.classList.remove('active');
             });
-        }, { threshold: 0.1 });
-        document.querySelectorAll('.hidden').forEach(el => observer.observe(el));
+        });
+
+        /* Reveal animations */
+        const observer = new IntersectionObserver(entries=>{
+            entries.forEach(e=>{
+                if(e.isIntersecting) e.target.classList.add('show');
+            });
+        });
+        document.querySelectorAll('.hidden').forEach(el=>observer.observe(el));
     </script>
+
 </body>
 </html>
